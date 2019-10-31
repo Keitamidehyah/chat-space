@@ -37,6 +37,7 @@
           .lower-message__content
             メッセージ
       .message
+      = render @messages
         .upper-message
           .upper-message__user-name
             メンバー
@@ -53,5 +54,3 @@
             = fa_icon 'picture-o', class: 'icon'
             = f.file_field :image, class: 'hidden'
         = f.submit 'Send', class: 'form__submit'
-      .messages
-      = render @messages
