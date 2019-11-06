@@ -1,8 +1,11 @@
 $(function(){   
  function buildHTML(comment){
+    var image = message.image.url? 
+    `<img src="${message.image}", class = 'lower-message-image'>` : "";
+
     var html = `<p>
                   <strong>
-                    <a href=/users/${comment.user_id}>${comment.user_name}</a>
+                    <a href=/users/${comment.user_id}>${comment.user_name}>${message.image}</a>
                     :
                   </strong>
                   ${comment.content}
@@ -23,10 +26,8 @@ $(function(){
       contentType: false
     })
     .done(function(data){
-      console.log(data)
       var html = buildHTML(data);
       $('.comments').append(html);
-      $('.messagebox').val('');
       $('.chat').animate({scrollTop: $('.chat')[0].scrollHeight});
       $('form').get(0).reset();
     })
