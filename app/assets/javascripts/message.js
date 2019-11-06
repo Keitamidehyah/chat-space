@@ -2,10 +2,10 @@ $(function(){
  function buildHTML(comment){
     var html = `<p>
                   <strong>
-                    <a href=/users/${meessage.user_id}>${comment.user_name}</a>
+                    <a href=/users/${comment.user_id}>${comment.user_name}</a>
                     :
                   </strong>
-                  ${content.meessage}
+                  ${comment.content}
                 </p>`
     return html;
   }
@@ -13,7 +13,6 @@ $(function(){
     e.preventDefault();
     var formData = new FormData(this);
     var url = $(this).attr('action')
-    console.log(url)
 
     $.ajax({
       url: url,
@@ -24,10 +23,11 @@ $(function(){
       contentType: false
     })
     .done(function(data){
+      console.log(data)
       var html = buildHTML(data);
       $('.comments').append(html);
       $('.messagebox').val('');
-      $('message').animate({scrollTop: $(messages)[0].scrollHeight});
+      $('.chat').animate({scrollTop: $('.chat')[0].scrollHeight});
       $('form').get(0).reset();
     })
     .fail (function(){
