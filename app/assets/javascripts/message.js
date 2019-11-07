@@ -1,14 +1,14 @@
 $(function(){   
  function buildHTML(comment){
     var image = message.image.url? 
-    `<img src="${message.image}", class = 'lower-message-image'>` : "";
+    `<img src="${message.image.url}", class = 'lower-message-image'>` : "";
 
     var html = `<p>
                   <strong>
-                    <a href=/users/${comment.user_id}>${comment.user_name}>${message.image}</a>
+                    <a href=/users/${comment.user.id}>${comment.user.name}>${message.image.url}</a>
                     :
                   </strong>
-                  ${comment.content}
+                  ${comment.message.content}
                 </p>`
     return html;
   }
@@ -30,12 +30,10 @@ $(function(){
       $('.comments').append(html);
       $('.chat').animate({scrollTop: $('.chat')[0].scrollHeight});
       $('form').get(0).reset();
+      $('.form__submit').removeAttr('disabled')
     })
     .fail (function(){
       alert('メッセージ送信に失敗しました');
-    })
-    .always(function(){
-      $('.form__submit').prop('disabled', false);
     })
    })
   })
