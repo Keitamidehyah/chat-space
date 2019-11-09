@@ -16,25 +16,32 @@ $(function(){
      e.preventDefault();
      var formData = new FormData(this);
      var url = $(this).attr('action')
+
+    })
+    var reloadMessages = function () {
+      if (window.location.href.match(/\/groups\/\d+\/messages/)) {
+        var last_message_id = $('.message:last').data("message-id");
  
      $.ajax({
-       url: url,
-       type: 'POST',
+      url: "api/messages",
+      type: 'get',
        data: formData,
        dataType: 'json',
-       processData: false,
-       contentType: false
+       data: {last_id: last_message_id}
      })
-     .done(function(data){
-       var html = buildHTML(data);
-       $('.comments').append(html);
-       $('.chat').animate({scrollTop: $('.chat')[0].scrollHeight});
-       $('form').get(0).reset();
-       $('.form__submit').removeAttr('disabled')
+     .done(function(messages) {
+      var inserthtml = '';
+      messages.forEach(function (message){
+        insertHTML = buildHTML(message);
+        $('.messages').append(insertHTML);
+      })
+      $('messages').animate({scrollTop: $('messages')[0].scrollHeight}, 'fast');
      })
      .fail (function(){
        alert('メッセージ送信に失敗しました');
-     })
-    })
-   })
+      });
+    }
+   };
+  setInterval(reloadMessages, 5000);
+   });
 
