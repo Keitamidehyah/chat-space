@@ -37,10 +37,10 @@
     }
   }
 
-  .messages {
+  .message {
     background-color: #FAFAFA;
     box-sizing: border-box;
-    overflow-y: scroll;
+    overflow: scroll;
     padding: 46px 40px 0;
     height: calc(100vw - 100px - 90px);
     .message {
