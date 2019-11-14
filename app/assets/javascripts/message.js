@@ -1,5 +1,7 @@
 $(function(){   
+
   function buildHTML(comment){
+
      var image = message.image.url? 
      `<img src="${message.image.url}", class = 'lower-message-image'>` : "";
  
@@ -30,9 +32,9 @@ $(function(){
        data: {last_id: last_message_id}
      })
      .done(function(messages) {
-      var inserthtml = '';
-      messages.forEach(function (message){
-        insertHTML = buildHTML(message);
+       var inserthtml = '';
+       messages.forEach(function (message){
+         insertHTML = buildHTML(message);
         $('.messages').append(insertHTML);
       })
 
@@ -45,4 +47,6 @@ $(function(){
    };
   setInterval(reloadMessages, 5000);
    });
+
+
 
