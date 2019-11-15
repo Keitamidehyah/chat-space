@@ -29,7 +29,7 @@
       float: right;
       height: 40px;
       line-height: 40px;
-      margin-top: 28px;
+      margin-top: 30px;
       padding: 0 20px;
       &__button {
         color: $light_blue;
@@ -38,7 +38,7 @@
     }
   }
 
-  .message {
+  .messages {
     height: calc(100vh - 190px);
     padding: 46px 40px;
     background-color: #FAFAFA;
