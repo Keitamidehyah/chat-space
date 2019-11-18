@@ -8,7 +8,7 @@
         .left-header__title
           =@group.name
         %ul.left-header__members
-          メンバー名
+          Member : 
           %li.member
             - @group.users.each do |user|
               = user.name
