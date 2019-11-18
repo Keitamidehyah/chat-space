@@ -1,4 +1,4 @@
-$(function(){   
+$(function() {
 
   function buildHTML(comment){
 
@@ -15,34 +15,6 @@ $(function(){
      return html;
 
     }
-  
-    function ScrollToNewMessage(){
-      $('.chat__message').animate({scrollTop: $('.chat__message')[0].scrollHeight}, 'fast');
-   }
-   var reloadMessages = function () {
-    if (window.location.href.match(/\/groups\/\d+\/messages/)){
-      var last_message_id = $('.message:last').data("message-id"); 
-
-      $.ajax({ 
-        url: "api/messages", 
-        type: 'get', 
-        dataType: 'json', 
-        data: {last_id: last_message_id} 
-      })
-      .done(function (messages) { 
-        var insertHTML = '';
-        messages.forEach(function (message) {
-          insertHTML = buildHTML(message); 
-          $('.messages').append(insertHTML);
-          ScrollToNewMessage();
-      });
-    })
-      .fail(function () {
-        alert('自動更新に失敗しました');
-      })
-  setInterval(reloadMessages, 5000);
-  }
-
 
   $('#new_message').on('submit', function(e){
     e.preventDefault();
@@ -67,4 +39,34 @@ ScrollToNewMessage();
     .fail (function(){
       alert('メッセージ送信に失敗しました');
     });
-  });
+
+  
+    function ScrollToNewMessage() {
+      $('.chat__message').animate({scrollTop: $('.chat__message')[0].scrollHeight}, 'fast');
+   }
+   var reloadMessages = function () {
+    if (window.location.href.match(/\/groups\/\d+\/messages/)){
+      var last_message_id = $('.message:last').data("message-id"); 
+
+      $.ajax({ 
+        url: "api/messages", 
+        type: 'get', 
+        dataType: 'json', 
+        data: {last_id: last_message_id} 
+      })
+      .done(function (messages) { 
+        var insertHTML = '';
+        messages.forEach(function (message) {
+          insertHTML = buildHTML(message); 
+          $('.messages').append(insertHTML);
+          ScrollToNewMessage();
+      })
+    })
+      .fail(function () {
+        alert('自動更新に失敗しました');
+      });
+    }
+  };
+  setInterval(reloadMessages, 5000);
+ });
+});
