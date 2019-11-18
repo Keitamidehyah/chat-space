@@ -2,17 +2,22 @@ $(function() {
 
   function buildHTML(comment){
 
-     var image = message.image.url? 
-     `<img src="${message.image.url}", class = 'lower-message-image'>` : "";
+     var image = comment.image? `<img src="${comment.image}", class = 'lower-message-image'>` : "";
+
  
      var html = `<p>
                    <strong>
-                     <a href=/users/${comment.user.id}>${comment.user.name}>${message.image.url}</a>
-                     :
+                     <a href=/users/${comment.id}>${comment.user_name}>
+                     ${image}
+                     </a>
                    </strong>
-                   ${comment.message.content}
+                   ${comment.content}
                  </p>`
      return html;
+    }
+
+    function ScrollToNewMessage() {
+      $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast');
 
     }
 
@@ -20,7 +25,6 @@ $(function() {
     e.preventDefault();
     var formData = new FormData(this);
     var url = $(this).attr('action')
-
     $.ajax({
       url: url,
       type: 'POST',
@@ -29,31 +33,28 @@ $(function() {
       processData: false,
       contentType: false
     })
+
     .done(function(data){
-      var html = buildHTML(data);
-      $('.comments').append(html);
-ScrollToNewMessage();
-	  	$('.form__message').val('');
-	  	$(".form__submit").prop('disabled', false);
+                var html = buildHTML(data);
+                 $('.comments').append(html);
+      ScrollToNewMessage();
+                 $('.form__message').val('');
+                 $(".form__submit").prop('disabled', false);
     })
     .fail (function(){
       alert('メッセージ送信に失敗しました');
     });
-
-  
-    function ScrollToNewMessage() {
-      $('.chat__message').animate({scrollTop: $('.chat__message')[0].scrollHeight}, 'fast');
-   }
+   });
    var reloadMessages = function () {
     if (window.location.href.match(/\/groups\/\d+\/messages/)){
-      var last_message_id = $('.message:last').data("message-id"); 
-
+      var last_message_id = $('.message:last').data("message-id");  
       $.ajax({ 
         url: "api/messages", 
+        data: {last_id: last_message_id},
         type: 'get', 
-        dataType: 'json', 
-        data: {last_id: last_message_id} 
+        dataType: 'json'
       })
+
       .done(function (messages) { 
         var insertHTML = '';
         messages.forEach(function (message) {
@@ -67,6 +68,5 @@ ScrollToNewMessage();
       });
     }
   };
-  setInterval(reloadMessages, 5000);
- });
-});
+    setInterval(reloadMessages, 5000);
+  });
