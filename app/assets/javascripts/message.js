@@ -5,15 +5,23 @@ $(function() {
      var image = comment.image? `<img src="${comment.image}", class = 'lower-message-image'>` : "";
 
  
-     var html = `<p>
-                   <strong>
-                     <a href=/users/${comment.id}>${comment.user_name}>
-                     ${image}
-                     </a>
-                   </strong>
-                   ${comment.content}
-                 </p>`
-     return html;
+     var html = `<div class="message" data-message-id="${comment.id}"> 
+     <div class="upper-message">
+       <div class="upper-message__user-name">
+         ${comment.user_name}
+       </div>
+       <div class="upper-message__date">
+         ${comment.created_at}
+       </div>
+     </div>
+     <div class="lower-meesage">
+       <p class="lower-message__content">
+         ${comment.content}
+       </p>
+       ${image}
+     </div>
+   </div>`
+return html;
     }
 
     function ScrollToNewMessage() {
@@ -36,7 +44,7 @@ $(function() {
 
     .done(function(data){
                 var html = buildHTML(data);
-                 $('.comments').append(html);
+                 $('.messages').append(html);
       ScrollToNewMessage();
                  $('.form__message').val('');
                  $(".form__submit").prop('disabled', false);
@@ -45,28 +53,28 @@ $(function() {
       alert('メッセージ送信に失敗しました');
     });
    });
-   var reloadMessages = function () {
-    if (window.location.href.match(/\/groups\/\d+\/messages/)){
-      var last_message_id = $('.message:last').data("message-id");  
-      $.ajax({ 
-        url: "api/messages", 
-        data: {last_id: last_message_id},
-        type: 'get', 
-        dataType: 'json'
-      })
+  //  var reloadMessages = function () {
+  //   if (window.location.href.match(/\/groups\/\d+\/messages/)){
+  //     var last_message_id = $('.message:last').data("message-id");  
+  //     $.ajax({ 
+  //       url: "api/messages", 
+  //       data: {last_id: last_message_id},
+  //       type: 'get', 
+  //       dataType: 'json'
+  //     })
 
-      .done(function (messages) { 
-        var insertHTML = '';
-        messages.forEach(function (message) {
-          insertHTML = buildHTML(message); 
-          $('.messages').append(insertHTML);
-          ScrollToNewMessage();
-      })
-    })
-      .fail(function () {
-        alert('自動更新に失敗しました');
-      });
-    }
-  };
-    setInterval(reloadMessages, 5000);
+  //     .done(function (messages) { 
+  //       var insertHTML = '';
+  //       messages.forEach(function (message) {
+  //         insertHTML = buildHTML(message); 
+  //         $('.messages').append(insertHTML);
+  //         ScrollToNewMessage();
+  //     })
+  //   })
+  //     .fail(function () {
+  //       alert('自動更新に失敗しました');
+  //     });
+  //   }
+  // };
+  //   setInterval(reloadMessages, 5000);
   });
